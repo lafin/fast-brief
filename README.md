@@ -1,6 +1,7 @@
 ### FAST + BRIEF
 ___
 
-FAST - [https://github.com/lafin/fast](https://github.com/lafin/fast)
+- FAST - [https://github.com/lafin/fast](https://github.com/lafin/fast)
+- BRIEF - [https://github.com/lafin/brief](https://github.com/lafin/brief)
 
-![](image_2.png)
+![](fast_2.png)
