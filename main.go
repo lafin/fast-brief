@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"math"
 	"os"
 
 	"github.com/fogleman/gg"
@@ -78,9 +79,37 @@ func main() {
 	descriptors3 := brief.GetDescriptors(pixList3, width3, corners3, randomWindowOffsets)
 
 	matches := brief.ReciprocalMatch(corners2, descriptors2, corners3, descriptors3)
+
+	im1, _ := gg.LoadPNG("brief_1.png")
+	im2, _ := gg.LoadPNG("brief_2.png")
+	s1 := im1.Bounds().Size()
+	s2 := im2.Bounds().Size()
+
+	width := s1.X + s2.X
+	height := int(math.Max(float64(s1.Y), float64(s2.Y)))
+
+	dc = gg.NewContext(width, height)
+	dc.DrawImage(im1, 0, 0)
+	dc.DrawImage(im2, s1.X, 0)
 	for _, match := range matches {
-		fmt.Println(match)
+		x1, y1 := float64(match.Keypoint1[0]), float64(match.Keypoint1[1])
+		x2, y2 := float64(match.Keypoint2[0]+s1.X), float64(match.Keypoint2[1])
+		dc.DrawCircle(x1, y1, 2)
+		dc.DrawCircle(x2, y2, 2)
 	}
+	dc.SetHexColor("#0000FF")
+	dc.Fill()
+
+	for _, match := range matches {
+		x1, y1 := float64(match.Keypoint1[0]), float64(match.Keypoint1[1])
+		x2, y2 := float64(match.Keypoint2[0]+s1.X), float64(match.Keypoint2[1])
+		dc.DrawLine(x1, y1, x2, y2)
+	}
+	dc.SetHexColor("#0000FF")
+	dc.SetLineWidth(2)
+	dc.Stroke()
+
+	dc.SavePNG("brief_3.png")
 
 	fmt.Println("done")
 }
