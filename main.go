@@ -13,8 +13,8 @@ import (
 	"github.com/tajtiattila/blur"
 )
 
-func grayImageToPixList(gray *image.Gray, width, height int) []int {
-	pixList := make([]int, width*height)
+func grayImageToPixList(gray *image.Gray, width, height int) map[int]int {
+	pixList := make(map[int]int, width*height)
 	for index := 0; index < width*height; index++ {
 		pixList[index] = int(gray.Pix[index])
 	}
@@ -65,7 +65,11 @@ func main() {
 	}
 	dc.SetHexColor("#0000FF")
 	dc.Fill()
-	dc.SavePNG("fast_2.png")
+	err := dc.SavePNG("fast_2.png")
+	if err != nil {
+		// replace this with real error handling
+		panic(err)
+	}
 
 	gray2, width2, height2 := toGray("brief_1.png")
 	gray3, width3, height3 := toGray("brief_2.png")
@@ -109,7 +113,11 @@ func main() {
 	dc.SetLineWidth(2)
 	dc.Stroke()
 
-	dc.SavePNG("brief_3.png")
+	err = dc.SavePNG("brief_3.png")
+	if err != nil {
+		// replace this with real error handling
+		panic(err)
+	}
 
 	fmt.Println("done")
 }
